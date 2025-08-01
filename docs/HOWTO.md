@@ -19,11 +19,11 @@
      - [3.1.5 CopyRAM](#315-CopyRAM)
      - [3.1.6 FillRAM](#316-FillRAM)  
    - [3.2 memoryMSXSlots · Manage to memory pages](#32-memoryMSXSlots-·-Manage-to-memory-pages)
-     - [3.2.7 GetSlotFromPage](#327-GetSlotFromPage)
-     - [3.2.8 SetPageSlot](#328-SetPageSlot)
-     - [3.2.9 IsSlotExpanded](#329-IsSlotExpanded)
-     - [3.2.10 GetSubslotFromPage](#3210-GetSubslotFromPage)
-     - [3.2.11 SetPageSubslot](#3211-SetPageSubslot)
+     - [3.2.1 GetSlotFromPage](#321-GetSlotFromPage)
+     - [3.2.2 SetPageSlot](#322-SetPageSlot)
+     - [3.2.3 IsSlotExpanded](#323-IsSlotExpanded)
+     - [3.2.4 GetSubslotFromPage](#324-GetSubslotFromPage)
+     - [3.2.5 SetPageSubslot](#325-SetPageSubslot)
 - [4 References](#4-References)
 
 <br/>
@@ -193,7 +193,7 @@ This type uses the values "true" or "false" in lowercase, which equals 1 and 0 r
 
 <br/>
 
-#### 3.2.7 GetSlotFromPage
+#### 3.2.1 GetSlotFromPage
 
 <table>
 <tr><th colspan=3 align="left">GetSlotFromPage</th></tr>
@@ -212,7 +212,7 @@ This type uses the values "true" or "false" in lowercase, which equals 1 and 0 r
 
 <br/>  
 
-#### 3.2.8 SetPageSlot
+#### 3.2.2 SetPageSlot
 
 <table>
 <tr><th colspan=3 align="left">SetPageSlot</th></tr>
@@ -233,7 +233,7 @@ This type uses the values "true" or "false" in lowercase, which equals 1 and 0 r
 
 <br/>  
 
-#### 3.2.9 IsSlotExpanded
+#### 3.2.3 IsSlotExpanded
 
 <table>
 <tr><th colspan=3 align="left">IsSlotExpanded</th></tr>
@@ -251,7 +251,7 @@ This type uses the values "true" or "false" in lowercase, which equals 1 and 0 r
 
 <br/>  
 
-#### 3.2.10 GetSubslotFromPage
+#### 3.2.4 GetSubslotFromPage
 
 <table>
 <tr><th colspan=3 align="left">GetSubslotFromPage</th></tr>
@@ -270,7 +270,7 @@ This type uses the values "true" or "false" in lowercase, which equals 1 and 0 r
 
 <br/>            
 
-#### 3.2.11 SetPageSubslot
+#### 3.2.5 SetPageSubslot
 
 <table>
 <tr><th colspan=3 align="left">SetPageSubslot</th></tr>

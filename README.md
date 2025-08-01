@@ -22,7 +22,7 @@ This project provides two libraries for accessing the memory of MSX systems:
 - **memory_Z80.rel** provides you with functions to read or write to the memory. 
 - **memory_Slots_MSX.rel** allows you to configure the pages of the slots and subslots.
 
-You can use this library to develop applications for ROM, MSXBASIC or MSX-DOS environments, using the Small Device C Compiler [(SDCC)](http://sdcc.sourceforge.net/) cross compiler.
+You can use these libraries to develop applications for ROM, MSXBASIC or MSX-DOS environments, using the Small Device C Compiler [(SDCC)](http://sdcc.sourceforge.net/) cross compiler.
 
 You can access the documentation here with [`How to use the library`](docs/HOWTO.md).
 
@@ -59,6 +59,35 @@ Enjoy it!
 
 - [Small Device C Compiler (SDCC) v4.4](http://sdcc.sourceforge.net/)
 - [Hex2bin v2.5](http://hex2bin.sourceforge.net/)
+
+<br/>
+
+---
+
+## Functions
+
+### memory_Z80 · Read/Write Memory
+
+| Name  | Declaration  | Output | Description |
+| :---  | :---         | :---   | :---        |
+| PEEK  | `PEEK(address)`  | `char` | Read a 8 bit value from the memory |
+| PEEKW | `PEEKW(address)` | `unsigned int` | Read a 16 bit value from the memory |
+| POKE  | `POKE(address,value)`  | - | Write an 8 bit value in RAM   |
+| POKEW | `POKEW(address,value)` | - | Write an 16 bit value in RAM  |
+| CopyRAM | `CopyRAM(source, destination, length)` | - | Copy a block of memory to another address |
+| FillRAM | `FillRAM(address,length,value)` | - | Fills an area of the RAM with a value |
+
+<br/>
+
+### memory_Slots_MSX · Manage to memory pages
+
+| Name  | Declaration  | Output | Description |
+| :---  | :---         | :---   | :---        |
+| GetSlotFromPage | `GetSlotFromPage(page)` | `char` | Returns the slot number of the indicated page  |
+| SetPageSlot | `SetPageSlot(page, slot)` | - | Set a slot on the indicated page  |
+| IsSlotExpanded | `IsSlotExpanded(slot)` | `char` or deftype `boolean` | Returns if the slot is of the expanded type  |
+| GetSubslotFromPage | `GetSubslotFromPage(page)` | `char` | Returns the Subslot number of the indicated page (For expanded slots)  |
+| SetPageSubslot | `SetPageSubslot(page, subslot)` | - | Set a subslot on the indicated page (For expanded slots)  |
 
 <br/>
 
