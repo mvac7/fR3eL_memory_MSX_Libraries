@@ -64,7 +64,9 @@ Enjoy it!
 
 ---
 
-## Functions
+## Quick Function Guide
+
+See the [How to](docs/HOWTO.md) document for more information and examples.
 
 ### memory_Z80 · Read/Write Memory
 
