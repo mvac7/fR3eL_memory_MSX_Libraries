@@ -17,15 +17,13 @@
      - [3.1.3 POKE](#313-POKE)
      - [3.1.4 POKEW](#314-POKEW)
      - [3.1.5 CopyRAM](#315-CopyRAM)
-     - [3.1.6 FillRAM](#316-FillRAM)
-  
+     - [3.1.6 FillRAM](#316-FillRAM)  
    - [3.2 memoryMSXSlots · Manage to memory pages](#32-memoryMSXSlots-·-Manage-to-memory-pages)
      - [3.2.7 GetSlotFromPage](#327-GetSlotFromPage)
      - [3.2.8 SetPageSlot](#328-SetPageSlot)
      - [3.2.9 IsSlotExpanded](#329-IsSlotExpanded)
      - [3.2.10 GetSubslotFromPage](#3210-GetSubslotFromPage)
      - [3.2.11 SetPageSubslot](#3211-SetPageSubslot)
-
 - [4 References](#4-References)
 
 <br/>
@@ -34,16 +32,18 @@
 
 ## 1 Description
 
+C function library for accessing Z80 memory and slots/subslots on MSX computers.
+
 This project provides two libraries for accessing the memory of MSX systems:
 - **memoryZ80** provides you with functions to read or write to the memory. 
 - **memoryMSXSlots** allows you to configure the pages of the slots and subslots.
 
-This project is an Open Source library. 
-You can add part or all of this code in your application development or include it in other libraries/engines.
-
-Use them for developing MSX applications using Small Device C Compiler [`SDCC`](http://sdcc.sourceforge.net/).
+You can use this library to develop applications for ROM, MSXBASIC or MSX-DOS environments, using the Small Device C Compiler [(SDCC)](http://sdcc.sourceforge.net/) cross compiler.
 
 This library is part of the [MSX fR3eL Project](https://github.com/mvac7/SDCC_MSX_fR3eL).
+
+This project is open source under the [MIT license](LICENSE).
+You can add part or all of this code in your application development or include it in other libraries/engines.
 
 <br/>
 
