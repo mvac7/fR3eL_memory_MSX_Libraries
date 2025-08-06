@@ -297,6 +297,7 @@ This type uses the values "true" or "false" in lowercase, which equals 1 and 0 r
 
 ## 4 References
 
+- The MSX Red Book - [1. Programmable Peripheral Interface](https://github.com/gseidler/The-MSX-Red-Book/blob/master/the_msx_red_book.md#chapter_1)
 - Wiki > [Slots](https://www.msx.org/wiki/Slots) `MSX Resource Center`
 - MSX I/O ports > [Programmable Peripheral Interface](https://map.grauw.nl/resources/msx_io_ports.php#ppi) `MSX Assembly Page`
 - [Primary slots and secondary slots](https://www.msx.org/forum/semi-msx-talk/emulation/primary-slots-and-secondary-slots) (forum discussion) `MSX Resource Center`

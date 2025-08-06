@@ -1,14 +1,16 @@
 /* =============================================================================
-Memory Slots MSX Library (fR3eL Project)
-Version: 1.4 (19/12/2024)
-Author: mvac7/303bcn
-Architecture: MSX
-Format: C Object (SDCC .rel)
-Programming language: C and z80 assembler
-Compiler: SDCC 4.4 or newer 
+# memory_Slots MSX Library (fR3eL Project)
 
-Description:
- Library for accessing page slots and subslots on MSX systems.
+- Version: 1.4 (19/12/2024)
+- Author: mvac7/303bcn
+- Architecture: MSX
+- Environment: ROM, MSX-DOS or BASIC
+- Format: SDCC Relocatable object file (.rel)
+- Programming language: C and Z80 assembler
+- Compiler: SDCC 4.4
+
+## Description:   
+	Library for accessing page slots and subslots on MSX systems.
 
 History of versions:
 - v1.4 (10/12/2024) This library contains only the paging management of 
@@ -28,70 +30,70 @@ History of versions:
 
 
 /* =============================================================================
-   GetSlotFromPage
- 
-   Function : Returns the slot number of the indicated page.
-   Input    : [char] page (0-3)              
-   Output   : [char] slot (0-3)   
+GetSlotFromPage
+Description:
+		Returns the slot number of the indicated page.
+Input:	[char] page (0-3)              
+Output:	[char] slot (0-3)   
 ============================================================================= */
 char GetSlotFromPage(char page) __naked
 {
 page;	//A
 __asm 
-   
-  di
-  
-  and  #0x03  
-  or   A              ;A=0?
-  jr   Z,PAGE0        ;if (A==0) GOTO PAGE0
-  
-  ld   B,A
-  in   A,(PPIregA)
-  ; for B
+	di
+
+//	A  <--------- page
+	and  #0x03  
+	or   A				//A=0?
+	jr   Z,PAGE0		//if (A==0) GOTO PAGE0
+
+	ld   B,A
+	in   A,(PPIregA)
+// for B
 nextRRCA:
-  RRCA
-  RRCA
-  djnz nextRRCA
-  jr   getPageValue
+	RRCA
+	RRCA
+	djnz nextRRCA
+	jr   getPageValue
 
 PAGE0:
-  in   A,(PPIregA)
+	in   A,(PPIregA)
   
 getPageValue:  
-  and  #0x03
-;  A <--- output value
-   
-  ei
-  
-  ret
+	and  #0x03
+
+	ei
+
+//	A <--- output value  
+	ret
 __endasm;
 }
 
 
 
 /* =============================================================================
-   SetPageSlot
- 
-   Function : Set a slot on the indicated page.
-   Input    : [char] page (0-3)
-              [char] slot (0-3)
-   Output   : -
+SetPageSlot
+Description:
+		Set a slot on the indicated page.
+Input:	[char] page (0-3)
+		[char] slot (0-3)
+Output:	-
 
-  
-   More Info: 
-   - Wiki > Slots (by MSX REsource Center) https://www.msx.org/wiki/Slots
-   - MSX I/O ports > Programmable Peripheral Interface (by MSX Assembly Page) https://map.grauw.nl/resources/msx_io_ports.php#ppi
-   
-   Primary slot select register
-      page 0 > 0x0000 - 0x3FFF
-      page 1 > 0x4000 - 0x7FFF
-      page 2 > 0x8000 - 0xBFFF
-      page 3 > 0xC000 - 0xFFFF
-			   
-	PPI-register A (0xA8) Primary slot select register:	
-	 76    | 54    | 32    | 10    | bits
-	-------|-------|-------|-------|
-	page 3 |page 2 |page 1 |page 0 | slot value
+--------------------------------------------------------------------------------
+More Info: 
+- Wiki > Slots (by MSX REsource Center) https://www.msx.org/wiki/Slots
+- MSX I/O ports > Programmable Peripheral Interface (by MSX Assembly Page) https://map.grauw.nl/resources/msx_io_ports.php#ppi
+
+Primary slot select register
+  page 0 > 0x0000 - 0x3FFF
+  page 1 > 0x4000 - 0x7FFF
+  page 2 > 0x8000 - 0xBFFF
+  page 3 > 0xC000 - 0xFFFF
+		   
+PPI-register A (0xA8) Primary slot select register:	
+ 76    | 54    | 32    | 10    | bits
+-------|-------|-------|-------|
+page 3 |page 2 |page 1 |page 0 | slot value
 ============================================================================= */
 void SetPageSlot(char page, char slot) __naked
 {
@@ -99,49 +101,51 @@ page;	//A
 slot;	//L
 __asm 
   
-  ; A  <--------- page
-  and  #0x03
-  ld   E,A
-  
-  ld   A,L   ;<-- slot
-  and  #0x03
-  ld   D,A 
-  
-  di
-  in   A,(PPIregA)
-  call EditSLOTval
-  out  (PPIregA),A
-  ei
-  
-  ret
-  
+//	A  <--------- page
+	and  #0x03
+	ld   E,A
 
-; set page in slot position in slot config value
-; --> D (slot)
-; --> E (page)
-; --> A  last slot config value
-; A <-- New slot config value
-;------------------------------------------------------------------------------- EditSLOTval
+	ld   A,L	//<-- slot
+	and  #0x03
+	ld   D,A 
+
+	di
+	in   A,(PPIregA)
+	call EditSLOTval
+	out  (PPIregA),A
+	ei
+
+	ret
+
+
+/* -----------------------------------------------
+EditSLOTval
+	set page in slot position in slot config value
+	--> D (slot)
+	--> E (page)
+	--> A  last slot config value
+	A <-- New slot config value
+----------------------------------------------- */
 EditSLOTval:
 	ld   L,A
   
 	call setPagePos
 
 writeSlotVal:  
-	and  #0b11111100	;set to 0 the two first bits  
-	add  A,D			;sumo el valor del slot
+	and  #0b11111100	//set to 0 the two first bits  
+	add  A,D			//sumo el valor del slot
   
 	ld   L,A
   
 setPagePos: 
-;set page position
+//set page position
 	ld   A,E
 	or   A
 	jr   Z,ifPAGE0
 
 	ld   B,A	
 	ld   A,L
-;rotate the value until it is in the correct position
+//rotate the value until it is in the correct position
 RotPage:
 	RLCA
 	RLCA
@@ -149,10 +153,10 @@ RotPage:
 	ret
 
 ifPAGE0:
-;no need to rotate the value
+//no need to rotate the value
 	ld   A,L
 	ret  
-;------------------------------------------------------------------- END EditSLOTval    
+//------------------------------------------------ END EditSLOTval    
 
 __endasm;
 }
@@ -162,134 +166,135 @@ __endasm;
 
 
 
-// ############################################################################# <<<
-//   Functions for computers with expanded slots.
+/* ############################################################################# <<< Expanded Slots >>>
+   Functions for computers with expanded slots.
+############################################################################# */
+
 
 
 /* =============================================================================
-   IsSlotExpanded
- 
-   Function : Returns if the slot is of the expanded type.
-   Input    : [char] slot (0-3)
-   Output   : [boolean] true = Yes; false = No
-   
-        EXPTBL 0xFCC1 Slot 0 expanded?
-               0xFCC2 Slot 1 expanded?
-               0xFCC3 Slot 2 expanded?
-               0xFCC4 Slot 3 expanded?
-               Yes = 0x80 ; No = 0
+IsSlotExpanded
+Description:
+		Returns if the slot is of the expanded type.
+Input:	[char] slot (0-3)
+Output:	[boolean] true = Yes; false = No
+
+	EXPTBL 0xFCC1 Slot 0 expanded?
+		   0xFCC2 Slot 1 expanded?
+		   0xFCC3 Slot 2 expanded?
+		   0xFCC4 Slot 3 expanded?
+		   Yes = 0x80 ; No = 0
 ============================================================================= */
 boolean IsSlotExpanded(char slot) __naked
 {
-slot;		//A
+slot;	//A
 __asm 
+//	A  <--------- slot
+	and  #0x03
+	ld   C,A
+	ld   B,#0
+	ld   HL,#EXPTBL
 
-  and  #0x03
-  ld   C,A
-  ld   B,#0
-  ld   HL,#EXPTBL
-  
-  add  HL,BC
-  
-  ld   A,(HL)
-  cp   #0x80
-  jr   NZ,expandFALSE
-  
-  ld   A,#1		;true
-  ret
+	add  HL,BC
+
+	ld   A,(HL)
+	cp   #0x80
+	jr   NZ,expandFALSE
+
+	ld   A,#1		//true
+	ret
   
 expandFALSE:
-  xor  A		;false
-  ret
+	xor  A			//false
+	ret
 __endasm;
 }
 
 
 
 /* =============================================================================
-   GetSubslotFromPage
- 
-   Function : Returns the Subslot number of the indicated page.
-   Input    : [char] page (0-3)              
-   Output   : [char] subslot (0-3)   
+GetSubslotFromPage
+Description: 
+		Returns the Subslot number of the indicated page.
+Input:	[char] page (0-3)              
+Output:	[char] subslot (0-3)   
 ============================================================================= */
 char GetSubslotFromPage(char page) __naked
 {
-page;		//A
+page;	//A
 __asm 
+//	A  <--------- page
+	and  #0x03
 
-  and  #0x03
-  
-  or   A            ;A=0?
-  jr   Z,PAGE0SS    ;if (A==0) GOTO PAGE0
-  
-  ld   B,A
-  ld   A,(#SLTSL)   ;0xFFFF
-  cpl
-  ; for B
+	or   A				//A=0?
+	jr   Z,PAGE0SS		//if (A==0) GOTO PAGE0
+
+	ld   B,A
+	ld   A,(#SLTSL)		//0xFFFF
+	cpl
+//	for B
 nextRRCASS:
-  RRCA
-  RRCA
-  djnz nextRRCASS
-  jr   getPageValueSS
+	RRCA
+	RRCA
+	djnz nextRRCASS
+	jr   getPageValueSS
 
 PAGE0SS:
-  ld   A,(#SLTSL)
-  cpl
+	ld   A,(#SLTSL)
+	cpl
     
 getPageValueSS:  
-  and  #0x03
-;  A <--- output value
+	and  #0x03
+//  A <--- output value
   
-  ret
+	ret
 __endasm;
 }
 
 
 
 /* =============================================================================
-   SetPageSubslot
- 
-   Function : Set a subslot on the indicated page.
-              If the slot is not expanded it will have no effect.
-			  
-   Input    : [char] page (0-3)
-              [char] subslot (0-3)
-   Output   : -
+SetPageSubslot
+Description:
+		Set a subslot on the indicated page.
+		If the slot is not expanded it will have no effect.
+		  
+Input:	[char] page (0-3)
+		[char] subslot (0-3)
+Output:	-
 
-  
-   More Info: (by MSX Assembly Page)  
-   http://map.grauw.nl/resources/msx_io_ports.php
-               
-           Secondary slot select register:
-               The subslot select register can be found at memory address #FFFF:
-               0-1 Subslot for page 0 (#0000-#3FFF)
-               2-3 Subslot for page 1 (#4000-#7FFF)
-               4-5 Subslot for page 2 (#8000-#BFFF)
-               6-7 Subslot for page 3 (#C000-#FFFF)
+--------------------------------------------------------------------------------
+More Info: (by MSX Assembly Page)  
+http://map.grauw.nl/resources/msx_io_ports.php
+		   
+	   Secondary slot select register:
+		   The subslot select register can be found at memory address #FFFF:
+		   0-1 Subslot for page 0 (#0000-#3FFF)
+		   2-3 Subslot for page 1 (#4000-#7FFF)
+		   4-5 Subslot for page 2 (#8000-#BFFF)
+		   6-7 Subslot for page 3 (#C000-#FFFF)
 ============================================================================= */
 void SetPageSubslot(char page, char subslot) __naked
 {
 page;		//A
 subslot;	//L
 __asm 
-  
-  ; A  <--------- page
-  and  #0x03
-  ld   E,A
-  
-  ld   A,L ;<---- subslot
-  and  #0x03
-  ld   D,A 
-  
-  ld   A,(#SLTSL)		;0xFFFF Secondary Slot select register system variable.
-						;(Reading returns the inverted previously written value)
-  cpl	;invert A  
-  
-  call EditSLOTval
-  ld   (#SLTSL),A
-  
-  ret
+//	A  <--------- page
+	and  #0x03
+	ld   E,A
+
+	ld   A,L			//<---- get subslot
+	and  #0x03
+	ld   D,A 
+
+	ld   A,(#SLTSL)		//0xFFFF Secondary Slot select register system variable.
+						//(Reading returns the inverted previously written value)
+	cpl					//invert A  
+
+	call EditSLOTval
+	ld   (#SLTSL),A
+
+	ret
 __endasm;
 }
 

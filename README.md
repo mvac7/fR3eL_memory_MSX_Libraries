@@ -117,3 +117,14 @@ Format: `MSX 8K ROM`
 ![Example 1 screenshot 4](docs/pics/TESTMEM_04.png)
 ![Example 1 screenshot 5](docs/pics/TESTMEM_05.png)
 ![Example 1 screenshot 6](docs/pics/TESTMEM_06.png)
+
+<br/>
+
+---
+
+## Documentation
+
+- The MSX Red Book - [1. Programmable Peripheral Interface](https://github.com/gseidler/The-MSX-Red-Book/blob/master/the_msx_red_book.md#chapter_1)
+- Wiki > [Slots](https://www.msx.org/wiki/Slots) `MSX Resource Center`
+- MSX I/O ports > [Programmable Peripheral Interface](https://map.grauw.nl/resources/msx_io_ports.php#ppi) `MSX Assembly Page`
+- [Primary slots and secondary slots](https://www.msx.org/forum/semi-msx-talk/emulation/primary-slots-and-secondary-slots) (forum discussion) `MSX Resource Center`

@@ -1,16 +1,18 @@
 /* =============================================================================
-Memory Z80 Library (fR3eL Project)
-Version: 1.4 (10/12/2024)
-Author: mvac7/303bcn
-Architecture: MSX
-Format: C Object (SDCC .rel)
-Programming language: C and z80 assembler
-Compiler: SDCC 4.4 or newer 
+# memory_Z80 Library (fR3eL Project)
 
-Description:
-Library with basic functions for working with memory on Z80 processors
+- Version: 1.4 (10/12/2024)
+- Author: mvac7/303bcn
+- Architecture: MSX
+- Environment: ROM, MSX-DOS or BASIC
+- Format: SDCC Relocatable object file (.rel)
+- Programming language: C and Z80 assembler
+- Compiler: SDCC 4.4
 
-History of versions:
+## Description:   
+	Library with basic functions for working with memory on Z80 processors
+
+## History of versions: (dd/mm/yyyy)
 - v1.4 (10/12/2024) Page management has been removed and added to a new library.
 - v1.3 (09/02/2024) Update to SDCC (4.1.12) Z80 calling conventions
 - v1.2 (29/09/2021) small optimization in PEEK
@@ -24,105 +26,101 @@ History of versions:
 
 
 /* =============================================================================
-   PEEK
- 
-   Function : Read a 8 bit value from the RAM.
-   Input    : [unsigned int] RAM address
-   Output   : [char] value
+PEEK
+Description: 
+		Read a 8 bit value from the memory.
+Input:	[unsigned int] memory address
+Output:	[char] value
 ============================================================================= */
 char PEEK(unsigned int address) __naked
 {
 address;	//HL
 __asm
-
-  ld   A,(HL)
-
-  ret
+	ld   A,(HL)
+	ret
 __endasm;
 }
 
 
 
 /* =============================================================================
-   PEEKW
- 
-   Function : Read a 16 bit value from the RAM
-   Input    : [unsigned int] RAM address
-   Output   : [unsigned int] value
+PEEKW
+Description:
+		Read a 16 bit value from the RAM
+Input:	[unsigned int] RAM address
+Output:	[unsigned int] value
 ============================================================================= */
 unsigned int PEEKW(unsigned int address) __naked
 {
 address;	//HL
 __asm
+	ld   E,(HL)
+	inc  HL
+	ld   D,(HL)
 
-  ld   E,(HL)
-  inc  HL
-  ld   D,(HL)
-  
-  ret
+	ret
 __endasm;
 }
 
 
 
 /* =============================================================================
-   POKE
- 
-   Function : Write an 8 bit value in RAM
-   Input    : [unsigned int] RAM address
-              [char] value
-   Output   : -
+POKE
+Description:
+		Write an 8 bit value in RAM
+Input:	[unsigned int] RAM address
+		[char] value
+Output:	-
 ============================================================================= */
 void POKE(unsigned int address, char value)
 {
 address; //HL
 value;   //stack
 __asm
-  push IX
-  ld   IX,#0
-  add  IX,SP
-  
-  ld   A,4(IX)
-  ld   (HL),A
+	push IX
+	ld   IX,#0
+	add  IX,SP
 
-  pop  IX
+	ld   A,4(IX)
+	ld   (HL),A
+
+	pop  IX
 __endasm;
 }
 
 
 
 /* =============================================================================
-   POKEW
- 
-   Function : Write an 16 bit value in RAM
-   Input    : [unsigned int] RAM address
-              [unsigned int] value
-   Output   : -
+POKEW
+Description:
+		Write an 16 bit value in RAM
+Input:	[unsigned int] RAM address
+		[unsigned int] value
+Output:	-
 ============================================================================= */
 void POKEW(unsigned int address, unsigned int value) __naked
 {
 address;	//HL
 value;		//DE
 __asm
-  
-  ld   (HL),E
-  inc  HL
-  ld   (HL),D
-  
-  ret
+	ld   (HL),E
+	inc  HL
+	ld   (HL),D
+
+	ret
 __endasm;
 }
 
 
 
 /* =============================================================================
-   CopyRAM
- 
-   Function : Copy a block of memory to another address.
-   Input    : [unsigned int] Source memory address
-              [unsigned int] Destination RAM address
-              [unsigned int] length 
-   Output   : -
+CopyRAM
+Description:
+		Copy a block of memory to another address.
+Input:	[unsigned int] Source memory address
+		[unsigned int] Destination RAM address
+		[unsigned int] length 
+Output:	-
 ============================================================================= */
 void CopyRAM(unsigned int source, unsigned int destination, unsigned int length)
 {
@@ -130,29 +128,29 @@ source;			//HL
 destination;	//DE
 length;			//Stack
 __asm
-  push IX
-  ld   IX,#0
-  add  IX,SP
-  
-  ld   C,4(IX)
-  ld   B,5(IX) ;length
-  
-  ldir
-  
-  pop  IX
+	push IX
+	ld   IX,#0
+	add  IX,SP
+
+	ld   C,4(IX)
+	ld   B,5(IX) ;length
+
+	ldir
+
+	pop  IX
 __endasm;
 }
 
 
 
 /* =============================================================================
-   FillRAM
- 
-   Function : Fills an area of the RAM with a value.
-   Input    : [unsigned int] RAM address
-              [unsigned int] length
-              [char] value
-   Output   : -
+FillRAM
+Description:
+		Fills an area of the RAM with a value.
+Input:	[unsigned int] RAM address
+		[unsigned int] length
+		[char] value
+Output:	-
 ============================================================================= */
 void FillRAM(unsigned int address, unsigned int length, char value)
 {
@@ -160,26 +158,26 @@ address;	//HL
 length;		//DE
 value;		//Stack
 __asm 
-  push IX
-  ld   IX,#0
-  add  IX,SP
-    
-  ld   C,E
-  ld   B,D
-  
-  ld   A,4(IX) ; value
-  
-  dec  BC
-  
-  ld   D,H
-  ld   E,L
-  
-  inc  DE
-  
-  ld   (HL),A
-  ldir
-  
-  pop  IX
+	push IX
+	ld   IX,#0
+	add  IX,SP
+
+	ld   C,E
+	ld   B,D
+
+	ld   A,4(IX) ; value
+
+	dec  BC
+
+	ld   D,H
+	ld   E,L
+
+	inc  DE
+
+	ld   (HL),A
+	ldir
+
+	pop  IX
 __endasm;
 }
 
